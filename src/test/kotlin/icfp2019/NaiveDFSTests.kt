@@ -16,7 +16,17 @@ class NaiveDFSTests {
                     "(21,14),(21,13),(20,13)#X(16,25);L(19,19);F(4,30);F(17,21);B(4,31)"
 
         val problem = parseDesc(problem3Input)
+        val dfs = NaiveDFS()
+        val graph = Graph<Node>()
+        for(arrList in problem.map) {
+            for(eachElem in arrList) {
+                graph.addEdge(eachElem, eachElem)
+            }
+        }
 
+        val startingPoint = Node(problem.startingPosition, false, null)
+        val path = dfs.depthFirstTraversal(graph, startingPoint)
+        println(path)
     }
 
     private fun printBoard(map: List<List<Int>>) {
