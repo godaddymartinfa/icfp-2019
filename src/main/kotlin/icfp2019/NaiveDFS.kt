@@ -13,8 +13,7 @@ class NaiveDFS {
             }
         }
 
-
-        // Create a stack for DFS. Both ArrayDeque and LinkedList implement Deque.
+        // Stack
         val stack: Deque<Node> = ArrayDeque()
 
         // Initial step -> add the startNode to the stack.
@@ -38,10 +37,10 @@ class NaiveDFS {
 
                 // Add nodes in the adjacency map.
                 graph.get(currentNode.point.x).forEach { node ->
-                    stack.push(node)
+                    if(!node.isObstacle)
+                        stack.push(node)
                 }
             }
-
         }
 
         return traversalList.joinToString()

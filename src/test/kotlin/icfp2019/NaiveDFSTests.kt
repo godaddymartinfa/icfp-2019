@@ -17,7 +17,7 @@ class NaiveDFSTests {
 
         val problem = parseDesc(problem3Input)
         val path = NaiveDFS().depthFirstTraversal(problem.map, Node(problem.startingPosition, false, null))
-        println("Some Path: ${path}")
+        println("Some Path: $path")
     }
 
     private fun printBoard(map: List<List<Int>>) {
