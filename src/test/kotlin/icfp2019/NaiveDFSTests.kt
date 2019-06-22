@@ -17,15 +17,7 @@ class NaiveDFSTests {
 
         val problem = parseDesc(problem3Input)
         val dfs = NaiveDFS()
-        val graph = Graph<Node>()
-        for(arrList in problem.map) {
-            for(eachElem in arrList) {
-                graph.addEdge(eachElem, eachElem)
-            }
-        }
-
-        val startingPoint = Node(problem.startingPosition, false, null)
-        val path = dfs.depthFirstTraversal(graph, startingPoint)
+        val path = dfs.depthFirstTraversal(problem.map, Node(problem.startingPosition, false, null))
         println(path)
     }
 
