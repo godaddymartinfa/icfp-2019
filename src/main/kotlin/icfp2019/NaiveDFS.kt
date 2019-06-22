@@ -3,7 +3,7 @@ package icfp2019
 import java.util.*
 
 class NaiveDFS {
-    fun depthFirstTraversal(graph: Array<Array<Node>>, startNode: Node): String {
+    fun depthFirstTraversal(graph: Array<Array<Node>>, startNode: Node): MutableList<Node> {
         // Mark all the vertices / nodes as not visited.
         val visitedMap = mutableMapOf<Node, Boolean>().apply {
             graph.forEach { eachArr ->
@@ -37,12 +37,11 @@ class NaiveDFS {
 
                 // Add nodes in the adjacency map.
                 graph.get(currentNode.point.x).forEach { node ->
-                    if(!node.isObstacle)
-                        stack.push(node)
+                    stack.push(node)
                 }
             }
         }
 
-        return traversalList.joinToString()
+        return traversalList
     }
 }
