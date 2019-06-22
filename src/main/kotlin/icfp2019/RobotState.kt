@@ -1,6 +1,7 @@
 package icfp2019
 
 data class RobotState(
+    val node: Node,
     val robotId: RobotId,
     val currentPosition: Point,
     val orientation: Orientation = Orientation.Up,

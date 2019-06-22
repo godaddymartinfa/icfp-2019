@@ -12,4 +12,12 @@ data class Node(
         }
         return false
     }
+
+    fun hasWrapper(): Boolean {
+        return isWrapped
+    }
+
+    fun hasObstacle(): Boolean {
+        return isObstacle
+    }
 }
