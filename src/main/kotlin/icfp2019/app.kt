@@ -4,7 +4,7 @@ import java.io.File
 import java.nio.file.Paths
 
 fun main(args: Array<String>) {
-    val path = Paths.get(if (args.isNotEmpty()) args[0] else "./problems").toAbsolutePath()
+    val path = Paths.get(if (args.isNotEmpty()) args[0] else "problems").toAbsolutePath()
     path.toFile().walk().forEach {
         if (it.isFile && it.extension.equals("desc")) {
             println("Running " + it.name)
