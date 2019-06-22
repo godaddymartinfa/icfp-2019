@@ -13,40 +13,40 @@ object DefaultMoveSelector : MoveSelector {
 
     fun availableMoves(robot: RobotState, gameState: GameState): List<Action> {
         val moves = mutableListOf<Action>()
-        val cell = gameState.gameBoard.get(robot.currentPosition)
+        val cell = gameState.gameBoard.get(robot.currentNode.point)
 
         // Asking about a bad location... No moves
-        if (!gameState.gameBoard.isInBoard(robot.currentPosition)) {
+        if (!gameState.gameBoard.isInBoard(robot.currentNode.point)) {
             return moves
         }
 
         // Things independent of point or location
-        moves.add(Action.DoNothing)
-        moves.add(Action.TurnClockwise)
-        moves.add(Action.TurnCounterClockwise)
-        moves.add(Action.PlantTeleportResetPoint)
-        for (location: Point in gameState.teleportDestination) {
-            moves.add(Action.TeleportBack(location))
-        }
+//        moves.add(Action.DoNothing)
+//        moves.add(Action.TurnClockwise)
+//        moves.add(Action.TurnCounterClockwise)
+//        moves.add(Action.PlantTeleportResetPoint)
+//        for (location: Point in gameState.teleportDestination) {
+//            moves.add(Action.TeleportBack(location))
+//        }
 
         fun canMoveTo(point: Point): Boolean {
             return gameState.gameBoard.isInBoard(point) && !cell.isObstacle
         }
 
         // Check directions
-        if (canMoveTo(robot.currentPosition.up())) {
+        if (canMoveTo(robot.currentNode.point.up())) {
             moves.add(Action.MoveUp)
         }
 
-        if (canMoveTo(robot.currentPosition.down())) {
+        if (canMoveTo(robot.currentNode.point.down())) {
             moves.add(Action.MoveDown)
         }
 
-        if (canMoveTo(robot.currentPosition.right())) {
+        if (canMoveTo(robot.currentNode.point.right())) {
             moves.add(Action.MoveRight)
         }
 
-        if (canMoveTo(robot.currentPosition.left())) {
+        if (canMoveTo(robot.currentNode.point.left())) {
             moves.add(Action.MoveLeft)
         }
 

@@ -6,6 +6,7 @@ import icfp2019.Node
 import icfp2019.Strategy
 import icfp2019.core.DefaultMoveSelector
 import icfp2019.core.MoveSelector
+import org.jgrapht.Graph
 import org.jgrapht.graph.DefaultEdge
 import org.jgrapht.graph.SimpleGraph
 import org.jgrapht.traverse.DepthFirstIterator
@@ -15,11 +16,12 @@ import java.util.*
 // Move to an open space and push moves onto a stack, if no moves available then backtrack using the stack
 class DFS : Strategy {
     // Returns the problem output string
-    override fun apply(undirectedGraph: SimpleGraph<Node, DefaultEdge>, gameState: GameState, initialPosition: Node): String {
+    override fun apply(undirectedGraph: Graph<Node, DefaultEdge>, gameState: GameState, initialPosition: Node): Iterable<Action>{
         val it: GraphIterator<Node, DefaultEdge>  = DepthFirstIterator<Node, DefaultEdge>(undirectedGraph)
         val visitedMap = mutableMapOf<Node, Boolean>()
         visitedMap.putIfAbsent(initialPosition, true)
 
+        //val debugList: MutableList<String> = mutableListOf()
         val traversalList: MutableList<Action> = mutableListOf()
         while(it.hasNext()) {
             val currentNode: Node = it.next()
@@ -29,14 +31,17 @@ class DFS : Strategy {
                     true -> DefaultMoveSelector.availableMoves(gameState.robotState, gameState)
                     false -> listOf()
                 }
-                traversalList.add(pickMove(moves))
+
+                val pickMove = pickMove(moves)
+                traversalList.add(pickMove)
+                //debugList.add(pickMove.toSolutionString() + " ${currentNode}")
             }
         }
-        return traversalList.joinToString;
+        return traversalList
     }
 
-    // A "heuristic" for picking movements for now pick any the last move
+    // A "heuristic" for picking movements random shuffle and get the first
     private fun pickMove(moves: List<Action>): Action {
-        return moves.get(moves.lastIndex)
+        return moves.shuffled().get(0)
     }
 }

@@ -1,10 +1,10 @@
 package icfp2019
 
 data class RobotState(
-    val node: Node,
     val robotId: RobotId,
-    val currentPosition: Point,
-    val orientation: Orientation = Orientation.Up,
-    val remainingFastWheelTime: Int? = null,
-    val remainingDrillTime: Int? = null
+    val currentNode: Node // Do position by node?
+//    val currentPosition: Point,
+//    val orientation: Orientation = Orientation.Up,
+//    val remainingFastWheelTime: Int? = null,
+//    val remainingDrillTime: Int? = null
 )
