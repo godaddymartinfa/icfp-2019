@@ -1,12 +1,8 @@
 package icfp2019
 
 import icfp2019.analyzers.GraphAnalyzer
-import icfp2019.core.Analyzer
 import icfp2019.strategies.DFS
-import org.jgrapht.Graph
-import org.jgrapht.graph.DefaultEdge
 import org.junit.jupiter.api.Test
-import org.pcollections.TreePVector
 
 class DFSTest {
     @Test
@@ -25,7 +21,7 @@ class DFSTest {
         val gameBoard = GameBoard(problem.map, problem.size.x, problem.size.y)
 
         val robotState = RobotState(RobotId(0), Node(problem.startingPosition, false, true, null))
-        val gameState = GameState(gameBoard, robotState)
+        val gameState = GameState(gameBoard, robotState, listOf(), listOf())
 
         val graphAnalyzer = GraphAnalyzer.analyze(gameBoard).invoke(gameState)
         val moves = DFS().apply(graphAnalyzer, gameState, gameState.robotState.currentNode)
