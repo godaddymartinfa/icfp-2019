@@ -75,7 +75,7 @@ fun parseDesc(problem: String): Problem {
     // Then walks the X axis for that row and for every edges crossed
     // it flips its inObstacle state
     yArrayIndices.forEach { y ->
-        var inObstacle = true
+        var inObstacle = false
         val currentYEdge = Range.closed(y, y + 1)
 
         xArrayIndices.forEach { x ->
