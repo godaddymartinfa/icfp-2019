@@ -28,7 +28,5 @@ class BackTrackingStrategy : Strategy {
         return !currentNode.isWrapped
     }
 
-    private fun gameStateMovement() {
-
-    }
+    private fun gameStateMovement(): Any { return "" }
 }

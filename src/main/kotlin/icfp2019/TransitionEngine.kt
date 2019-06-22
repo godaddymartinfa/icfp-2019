@@ -15,6 +15,12 @@ class TransitionEngine {
         return currentGameState
     }
 
+
+//    moves.add(Action.DoNothing)
+//    moves.add(Action.TurnClockwise)
+//    moves.add(Action.TurnCounterClockwise)
+//    moves.add(Action.PlantTeleportResetPoint)
+
     fun applyMoveDown(robotId: RobotId, gameState: GameState): GameState {
         val robotState = gameState.robotStateList.get(robotId.id)
         val newY = robotState.currentPosition.y - 1
@@ -35,7 +41,8 @@ class TransitionEngine {
     fun applyMoveUp(robotId: RobotId, gameState: GameState): GameState {
         val robotState = gameState.robotStateList.get(robotId.id)
         val newY = robotState.currentPosition.y + 1
-        if (newY > gameState.gameBoard.height - 1) throw IllegalArgumentException("Moved off board!")
+        if (newY > gameState.gameBoard.height - 1)
+            throw IllegalArgumentException("Moved off board!")
         val newRobotState = RobotState(
             robotId,
             Point(robotState.currentPosition.x, newY)
