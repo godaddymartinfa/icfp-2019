@@ -20,7 +20,9 @@ class DFSTest {
         val problem = parseDesc(problem3Input)
         val gameBoard = GameBoard(problem.map, problem.size.x, problem.size.y)
 
-        val robotState = RobotState(RobotId(0), Node(problem.startingPosition, false, true, null))
+        val robotState = RobotState(RobotId(0),
+            Node(problem.startingPosition, false, true, null),
+            problem.startingPosition, Orientation.Up, 0)
         val gameState = GameState(gameBoard, robotState, listOf(), listOf())
 
         val graphAnalyzer = GraphAnalyzer.analyze(gameBoard).invoke(gameState)
