@@ -1,7 +1,6 @@
 package icfp2019.analyzers
 
 import icfp2019.core.Analyzer
-import icfp2019.core.Proposal
 import icfp2019.model.Action
 import icfp2019.model.GameBoard
 import icfp2019.model.GameState

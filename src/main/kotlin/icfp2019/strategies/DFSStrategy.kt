@@ -22,7 +22,7 @@ object DFSStrategy : Strategy {
                 val currentNode: Node = it.next()
                 if (!visitedMap.containsKey(currentNode)) {
                     // Consume the node if we haven't seen the node before
-                    val moves: List<Action>  =
+                    val moves: List<Action> =
                         when (!currentNode.isWrapped) {
                             true -> MoveListAnalyzer.analyze(map)
                                 .invoke(gameState)
