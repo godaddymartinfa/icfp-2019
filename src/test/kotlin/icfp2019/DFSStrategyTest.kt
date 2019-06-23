@@ -1,10 +1,10 @@
 package icfp2019
 
 import icfp2019.analyzers.GraphAnalyzer
-import icfp2019.strategies.DFS
+import icfp2019.strategies.DFSStrategy
 import org.junit.jupiter.api.Test
 
-class DFSTest {
+class DFSStrategyTest {
     @Test
     fun testDFS() {
         val problem3Input =
@@ -26,7 +26,7 @@ class DFSTest {
         val gameState = GameState(gameBoard, robotState, listOf(), listOf())
 
         val graphAnalyzer = GraphAnalyzer.analyze(gameBoard).invoke(gameState)
-        val moves = DFS().apply(graphAnalyzer, gameState, gameState.robotState.currentNode)
+        val moves = DFSStrategy().apply(graphAnalyzer, gameState, gameState.robotState.currentNode)
         val output = Output.encodeActions(moves)
         println(output)
     }

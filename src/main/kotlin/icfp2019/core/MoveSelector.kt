@@ -21,13 +21,13 @@ object DefaultMoveSelector : MoveSelector {
         }
 
         // Things independent of point or location
-//        moves.add(Action.DoNothing)
-//        moves.add(Action.TurnClockwise)
-//        moves.add(Action.TurnCounterClockwise)
-//        moves.add(Action.PlantTeleportResetPoint)
-//        for (location: Point in gameState.teleportDestination) {
-//            moves.add(Action.TeleportBack(location))
-//        }
+        moves.add(Action.DoNothing)
+        moves.add(Action.TurnClockwise)
+        moves.add(Action.TurnCounterClockwise)
+        moves.add(Action.PlantTeleportResetPoint)
+        for (location: Point in gameState.teleportDestination) {
+            moves.add(Action.TeleportBack(location))
+        }
 
         fun canMoveTo(point: Point): Boolean {
             return gameState.gameBoard.isInBoard(point) && !cell.isObstacle
