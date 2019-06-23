@@ -7,27 +7,28 @@ import umontreal.ssj.util.BitMatrix
 data class RobotShape(val bitMatrix: BitMatrix,
                       val gameBoard: GameBoard,
                       val gameState: GameState) {
-
     // Game State and board for now till they're merged
-    fun initialConfiguration() : () -> Unit {
+    fun paintInitialConfiguration() : () -> Unit {
         return {
-            gameState.robotStateList.forEach { robotState ->
-                MoveAnalyzer.analyze(gameBoard)(gameState)(robotState.robotId, Action.DoNothing)
-                    .takeIf { it == true }
-                    ?.let {
-                        val copiedBitMatrix: Any = immutableCopyOf()
-                        copiedBitMatrix.setBool(robotState.currentPosition.x, robotState.currentPosition.y, true)
-                        copiedBitMatrix.setBool(robotState.currentPosition.x + 1, robotState.currentPosition.y, true)
-                        copiedBitMatrix.setBool(robotState.currentPosition.x + 1, robotState.currentPosition.y - 1, true)
+            gameState.robotState.forEach {
+                key, value ->
+                MoveAnalyzer.analyze(gameBoard)(gameState)(value.robotId, Action.DoNothing)
+                    .takeIf { true }
+                    ?.run {
+                        // Get rid of side-effects
+                        with(bitMatrix) {
+                            setBool(value.currentPosition.x, value.currentPosition.y, true)
+                            setBool(value.currentPosition.x + 1, value.currentPosition.y, true)
+                            setBool(value.currentPosition.x + 1, value.currentPosition.y + 1, true)
+                            setBool(value.currentPosition.x + 1, value.currentPosition.y - 1, true)
+                        }
                     }
             }
         }
     }
 
+    fun paint() {
 
-    // Create an immutable copy
-    fun immutableCopyOf(): {
-        return BitMatrix(bitMatrix.numRows(), bitMatrix.numColumns())
     }
 
     override fun hashCode(): Int {
