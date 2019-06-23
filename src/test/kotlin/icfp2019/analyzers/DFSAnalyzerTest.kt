@@ -4,7 +4,7 @@ import icfp2019.model.*
 import org.junit.jupiter.api.Test
 import org.pcollections.TreePVector
 
-class DFSAnalyzerTest  {
+class DFSAnalyzerTest {
     @Test
     fun testDfsAnalyzerTest() {
         var gameBoard = GameBoard(
