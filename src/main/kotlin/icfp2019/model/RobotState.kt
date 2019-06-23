@@ -6,13 +6,4 @@ data class RobotState(
     val orientation: Orientation = Orientation.Up,
     val remainingFastWheelTime: Int? = null,
     val remainingDrillTime: Int? = null
-) {
-    fun checkOpenOrientations(): MutableList<Orientation> {
-        return when(orientation) {
-            Orientation.Up -> mutableListOf(Orientation.Down, Orientation.Left, Orientation.Right)
-            Orientation.Left -> mutableListOf(Orientation.Up, Orientation.Down, Orientation.Right)
-            Orientation.Right -> mutableListOf(Orientation.Down, Orientation.Up, Orientation.Right)
-            Orientation.Down -> mutableListOf(Orientation.Up, Orientation.Down, Orientation.Right)
-        }
-    }
-}
+)

@@ -4,11 +4,11 @@ data class Node(
     val point: Point,
     val isObstacle: Boolean,
     val isWrapped: Boolean = false,
-    val hotTiles: HotTiles? = null
+    val boosters: Boosters? = null
 ) {
-    fun hasBooster(hotTiles: HotTiles): Boolean {
-        if (this.hotTiles != null) {
-            return this.hotTiles == hotTiles
+    fun hasBooster(boosters: Boosters): Boolean {
+        if (this.boosters != null) {
+            return this.boosters == boosters
         }
         return false
     }

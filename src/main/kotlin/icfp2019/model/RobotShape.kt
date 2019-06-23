@@ -11,33 +11,30 @@ data class RobotShape(val bitMatrix: BitMatrix,
                       private var currentArmPosition3: Point,
                       private var currentArmPosition4Extra: Point = Point()) {
 
-
-    // Game State and board for now till they're merged
-    fun initialState() : () -> Unit {
-        return {
-            gameState.robotState.forEach {
-                robotKey, robotStateValue ->
-                MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
-                    .takeIf { true }
-                    ?:apply {
-                        this.currentArmPosition1 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y)
-                        this.currentArmPosition2 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y + 1)
-                        this.currentArmPosition3 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y - 1)
-                    }.run {
-                        with(bitMatrix) {
-                            setBool(robotStateValue.currentPosition.x, robotStateValue.currentPosition.y, true)
-                            setBool(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y, true)
-                            setBool(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y + 1, true)
-                            setBool(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y - 1, true)
-                        }
+    // Game State and board for now till they're merged -- Initial State
+    init {
+        gameState.robotState.forEach {
+            robotKey, robotStateValue ->
+            MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
+                .takeIf { true }
+                ?:apply {
+                    this.currentArmPosition1 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y)
+                    this.currentArmPosition2 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y + 1)
+                    this.currentArmPosition3 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y - 1)
+                }.run {
+                    with(bitMatrix) {
+                        setBool(robotStateValue.currentPosition.x, robotStateValue.currentPosition.y, true)
+                        setBool(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y, true)
+                        setBool(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y + 1, true)
+                        setBool(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y - 1, true)
                     }
-            }
+                }
         }
     }
 
-    fun paintActionPositions(currentPosition: Point, hotTiles: HotTiles): () -> Unit {
-        when(hotTiles) {
-            HotTiles.ExtraArm -> {
+    fun paintActionPositions(currentPosition: Point, boosters: Boosters): () -> Unit {
+        when(boosters) {
+            Boosters.ExtraArm -> {
                 gameState.robotState.forEach {
                         robotKey, robotStateValue ->
                     MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
@@ -56,7 +53,7 @@ data class RobotShape(val bitMatrix: BitMatrix,
                         }
                 }
             }
-            HotTiles.Drill -> {
+            Boosters.Drill -> {
                 gameState.robotState.forEach {
                         robotKey, robotStateValue ->
                     MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
@@ -69,7 +66,7 @@ data class RobotShape(val bitMatrix: BitMatrix,
                         }
                 }
             }
-            HotTiles.Boost -> {
+            Boosters.Boost -> {
                 gameState.robotState.forEach {
                         robotKey, robotStateValue ->
                     MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)

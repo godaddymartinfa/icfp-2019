@@ -8,7 +8,7 @@ data class GameState(
     val mapSize: MapSize,
     val robotState: Map<RobotId, RobotState>,
     val teleportDestination: List<Point>,
-    val unusedHotTiles: List<HotTiles>
+    val unusedHotTiles: List<Boosters>
 ) {
     companion object {
         // Helper for constructing a game state from minimal description

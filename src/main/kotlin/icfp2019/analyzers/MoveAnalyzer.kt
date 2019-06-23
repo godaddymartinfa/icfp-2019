@@ -14,13 +14,13 @@ object MoveAnalyzer : Analyzer<(RobotId, Action) -> Boolean> {
                     map.isInBoard(robotState.currentPosition)) {
                     val cell = map.get(robotState.currentPosition)
 
-                    fun hasBooster(hotTiles: HotTiles): Boolean {
-                        return gameState.unusedHotTiles.contains(hotTiles)
+                    fun hasBooster(boosters: Boosters): Boolean {
+                        return gameState.unusedHotTiles.contains(boosters)
                     }
 
                     fun canMoveTo(point: Point): Boolean {
                         return map.isInBoard(point) &&
-                                (!cell.isObstacle || hasBooster(HotTiles.Drill))
+                                (!cell.isObstacle || hasBooster(Boosters.Drill))
                     }
 
                     fun canTeleportTo(point: Point): Boolean {
@@ -35,13 +35,13 @@ object MoveAnalyzer : Analyzer<(RobotId, Action) -> Boolean> {
                         Action.DoNothing -> true
                         Action.TurnClockwise -> true
                         Action.TurnCounterClockwise -> true
-                        is Action.AttachManipulator -> hasBooster(HotTiles.ExtraArm)
-                        Action.AttachFastWheels -> hasBooster(HotTiles.FastWheels)
-                        Action.StartDrill -> hasBooster(HotTiles.Drill)
-                        Action.PlantTeleportResetPoint -> hasBooster(HotTiles.Teleporter)
+                        is Action.AttachManipulator -> hasBooster(Boosters.ExtraArm)
+                        Action.AttachFastWheels -> hasBooster(Boosters.FastWheels)
+                        Action.StartDrill -> hasBooster(Boosters.Drill)
+                        Action.PlantTeleportResetPoint -> hasBooster(Boosters.Teleporter)
                         is Action.TeleportBack -> canTeleportTo(action.targetResetPoint)
-                        Action.CloneRobot -> hasBooster(HotTiles.CloneToken) &&
-                                map.get(robotState.currentPosition).hasBooster(HotTiles.CloningLocation)
+                        Action.CloneRobot -> hasBooster(Boosters.CloneToken) &&
+                                map.get(robotState.currentPosition).hasBooster(Boosters.CloningLocation)
                     }
                 }
                 possible
