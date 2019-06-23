@@ -6,21 +6,30 @@ import umontreal.ssj.util.BitMatrix
 
 data class RobotShape(val bitMatrix: BitMatrix,
                       val gameBoard: GameBoard,
-                      val gameState: GameState) {
+                      val gameState: GameState,
+                      private var currentArmPosition1: Point,
+                      private var currentArmPosition2: Point,
+                      private var currentArmPosition3: Point) {
+
+
     // Game State and board for now till they're merged
-    fun paintInitialConfiguration() : () -> Unit {
+    fun initialState() : () -> Unit {
         return {
             gameState.robotState.forEach {
-                key, value ->
-                MoveAnalyzer.analyze(gameBoard)(gameState)(value.robotId, Action.DoNothing)
+                robotKey, robotStateValue ->
+                MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
                     .takeIf { true }
-                    ?.run {
+                    ?.let {
+                        currentArmPosition1 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y)
+                        currentArmPosition2 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y + 1)
+                        currentArmPosition3 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y - 1)
+                    }?.run {
                         // Get rid of side-effects
                         with(bitMatrix) {
-                            setBool(value.currentPosition.x, value.currentPosition.y, true)
-                            setBool(value.currentPosition.x + 1, value.currentPosition.y, true)
-                            setBool(value.currentPosition.x + 1, value.currentPosition.y + 1, true)
-                            setBool(value.currentPosition.x + 1, value.currentPosition.y - 1, true)
+                            setBool(robotStateValue.currentPosition.x, robotStateValue.currentPosition.y, true)
+                            setBool(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y, true)
+                            setBool(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y + 1, true)
+                            setBool(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y - 1, true)
                         }
                     }
             }
@@ -30,10 +39,4 @@ data class RobotShape(val bitMatrix: BitMatrix,
     fun paint() {
 
     }
-
-    override fun hashCode(): Int {
-        return bitMatrix.hashCode()
-    }
-
-
 }
