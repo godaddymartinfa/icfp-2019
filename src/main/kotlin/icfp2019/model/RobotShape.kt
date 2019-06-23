@@ -19,10 +19,10 @@ data class RobotShape(val bitMatrix: BitMatrix,
                 robotKey, robotStateValue ->
                 MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
                     .takeIf { true }
-                    ?:let {
-                        currentArmPosition1 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y)
-                        currentArmPosition2 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y + 1)
-                        currentArmPosition3 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y - 1)
+                    ?:apply {
+                        this.currentArmPosition1 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y)
+                        this.currentArmPosition2 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y + 1)
+                        this.currentArmPosition3 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y - 1)
                     }.run {
                         with(bitMatrix) {
                             setBool(robotStateValue.currentPosition.x, robotStateValue.currentPosition.y, true)
@@ -42,9 +42,9 @@ data class RobotShape(val bitMatrix: BitMatrix,
                         robotKey, robotStateValue ->
                     MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
                         .takeIf { true }
-                        ?:let {
+                        ?:apply {
                             // Picking up at the current arm point so just use that point?
-                            currentArmPosition4Extra = Point(robotStateValue.currentPosition.x, robotStateValue.currentPosition.y)
+                            this.currentArmPosition4Extra = Point(robotStateValue.currentPosition.x, robotStateValue.currentPosition.y)
                         }.run {
                             with(bitMatrix) {
                                 // Paint all four arms
@@ -56,7 +56,36 @@ data class RobotShape(val bitMatrix: BitMatrix,
                         }
                 }
             }
-            HotTiles.
+            HotTiles.Drill -> {
+                gameState.robotState.forEach {
+                        robotKey, robotStateValue ->
+                    MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
+                        .takeIf { true }
+                        .run {
+                            with(bitMatrix) {
+                                // Paint just drill location
+                                setBool(robotStateValue.currentPosition.x, robotStateValue.currentPosition.y, true)
+                            }
+                        }
+                }
+            }
+            HotTiles.Boost -> {
+                gameState.robotState.forEach {
+                        robotKey, robotStateValue ->
+                    MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
+                        .takeIf { true }
+                        .apply {
+                            gameState.robotState.
+                            robotStateValue.orientation = robotStateValue.checkOpenOrientations().any()
+                        }.run {
+                            with(bitMatrix) {
+                                // Paint just drill location
+                                setBool(robotStateValue.currentPosition.x, robotStateValue.currentPosition.y, true)
+                            }
+                        }
+                }
+
+            }
         }
     }
 
