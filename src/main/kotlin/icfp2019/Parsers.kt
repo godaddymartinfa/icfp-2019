@@ -93,7 +93,7 @@ fun parseDesc(problem: String): Problem {
     }
 
     parsedBoosters.forEach {
-        grid[it.location.x][it.location.y] = grid[it.location.x][it.location.y].copy(booster = it.booster)
+        grid[it.location.x][it.location.y] = grid[it.location.x][it.location.y].copy(hotTiles = it.hotTiles)
     }
 
     // Read lines
@@ -117,12 +117,12 @@ fun parseDesc(problem: String): Problem {
     )
 }
 
-data class ParsedBooster(val booster: Booster, val location: Point)
+data class ParsedBooster(val hotTiles: HotTiles, val location: Point)
 
 fun parseBoosters(boosters: String): List<ParsedBooster> {
     return Splitters.SEMI_SPLITTER
         .split(boosters)
         .map {
-            ParsedBooster(Booster.fromString(it[0]), parsePoint(it.substring(1)))
+            ParsedBooster(HotTiles.fromString(it[0]), parsePoint(it.substring(1)))
         }
 }

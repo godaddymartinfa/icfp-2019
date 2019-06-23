@@ -1,6 +1,6 @@
 package icfp2019.model
 
-sealed class Booster {
+sealed class HotTiles {
     companion object {
         fun fromString(code: Char) = when (code) {
             'B' -> ExtraArm
@@ -9,15 +9,16 @@ sealed class Booster {
             'X' -> CloningLocation
             'C' -> CloneToken
             'R' -> Teleporter
-            else -> throw IllegalArgumentException("Unknown booster code: '$code'")
+            else -> throw IllegalArgumentException("Unknown hotTiles code: '$code'")
         }
     }
 
-    object ExtraArm : Booster()
-    object FastWheels : Booster()
-    object Drill : Booster()
-    object Teleporter : Booster()
+    object Boost : HotTiles()
+    object ExtraArm : HotTiles()
+    object FastWheels : HotTiles()
+    object Drill : HotTiles()
+    object Teleporter : HotTiles()
 
-    object CloningLocation : Booster()
-    object CloneToken : Booster()
+    object CloningLocation : HotTiles()
+    object CloneToken : HotTiles()
 }
