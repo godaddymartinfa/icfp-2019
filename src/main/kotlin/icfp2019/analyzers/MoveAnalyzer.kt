@@ -1,7 +1,7 @@
 package icfp2019.analyzers
 
-import icfp2019.model.*
 import icfp2019.core.Analyzer
+import icfp2019.model.*
 
 object MoveAnalyzer : Analyzer<(RobotId, Action) -> Boolean> {
     override fun analyze(map: GameBoard): (state: GameState) -> (RobotId, Action) -> Boolean {
@@ -11,7 +11,8 @@ object MoveAnalyzer : Analyzer<(RobotId, Action) -> Boolean> {
 
                 val robotState = gameState.robotState[robotId]
                 if (robotState != null &&
-                    map.isInBoard(robotState.currentPosition)) {
+                    map.isInBoard(robotState.currentPosition)
+                ) {
                     val cell = map.get(robotState.currentPosition)
 
                     fun hasBooster(boosters: Boosters): Boolean {
@@ -40,8 +41,9 @@ object MoveAnalyzer : Analyzer<(RobotId, Action) -> Boolean> {
                         Action.StartDrill -> hasBooster(Boosters.Drill)
                         Action.PlantTeleportResetPoint -> hasBooster(Boosters.Teleporter)
                         is Action.TeleportBack -> canTeleportTo(action.targetResetPoint)
-                        Action.CloneRobot -> hasBooster(Boosters.CloneToken) &&
-                                map.get(robotState.currentPosition).hasBooster(Boosters.CloningLocation)
+                        Action.CloneRobot -> hasBooster(Booster.CloneToken) &&
+                                map.get(robotState.currentPosition).hasBooster(Booster.CloningLocation)
+                        Action.Initialize -> false
                     }
                 }
                 possible
