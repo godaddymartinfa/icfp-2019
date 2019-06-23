@@ -1,9 +1,9 @@
 package icfp2019.analyzers
 
-import icfp2019.GameBoard
-import icfp2019.GameState
-import icfp2019.Node
 import icfp2019.core.Analyzer
+import icfp2019.model.GameBoard
+import icfp2019.model.GameState
+import icfp2019.model.Node
 import icfp2019.strategies.DFSStrategy
 import org.jgrapht.graph.DefaultEdge
 

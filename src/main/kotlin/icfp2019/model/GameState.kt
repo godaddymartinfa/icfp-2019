@@ -1,4 +1,4 @@
-package icfp2019
+package icfp2019.model
 
 data class GameState(
     val gameBoard: GameBoard,
@@ -8,6 +8,10 @@ data class GameState(
 ) {
     companion object {
         fun empty(startingPoint: Point) =
-            GameState(listOf(RobotState(RobotId(0), startingPoint)), listOf(), listOf())
+            GameState(
+                listOf(RobotState(RobotId(0), startingPoint)),
+                listOf(),
+                listOf()
+            )
     }
 }
