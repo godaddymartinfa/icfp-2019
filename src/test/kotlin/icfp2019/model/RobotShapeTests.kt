@@ -1,7 +1,12 @@
 package icfp2019.model
 
 import icfp2019.parseTestMap
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import umontreal.ssj.util.BitMatrix
+import java.lang.IllegalStateException
+import java.util.*
 
 class RobotShapeTests {
     val map = """
@@ -25,8 +30,11 @@ class RobotShapeTests {
                 XXXXXXXXXXXXXXXXXXXXXXXXXX"""
 
     @Test
-    fun testRobotShape() {
+    fun testRobotExtraArm() {
         val problem = parseTestMap(map)
-        problem.startingPosition
+        val matrix = BitMatrix(problem.size.x, problem.size.y)
+        val robotShape = RobotShape(matrix, GameBoard.gameBoardOf(problem), GameState.gameStateOf(Point(1, 1)))
+        robotShape.paintActionPositions(Boosters.ExtraArm)
+        Assertions.assertTrue(robotShape.bitMatrix.getBool(1, 1))
     }
 }

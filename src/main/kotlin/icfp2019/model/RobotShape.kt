@@ -4,24 +4,23 @@ import icfp2019.analyzers.MoveAnalyzer
 import umontreal.ssj.util.BitMatrix
 import java.lang.IllegalStateException
 
-data class RobotShape(val bitMatrix: BitMatrix,
+class RobotShape(val bitMatrix: BitMatrix,
                       val gameBoard: GameBoard,
                       val gameState: GameState,
-                      private var currentArmPosition1: Point,
-                      private var currentArmPosition2: Point,
-                      private var currentArmPosition3: Point,
+                      private var currentArmPosition1: Point = Point(),
+                      private var currentArmPosition2: Point = Point(),
+                      private var currentArmPosition3: Point = Point(),
                       private var currentArmPosition4Extra: Point = Point()) {
 
     // Game State and board for now till they're merged -- Initial State
     init {
-        gameState.robotState.forEach {
-            robotKey, robotStateValue ->
+        gameState.robotState.forEach { _, robotStateValue ->
             MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
                 .takeIf { true }
                 ?:apply {
-                    this.currentArmPosition1 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y)
-                    this.currentArmPosition2 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y + 1)
-                    this.currentArmPosition3 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y - 1)
+                    currentArmPosition1 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y)
+                    currentArmPosition2 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y + 1)
+                    currentArmPosition3 = Point(robotStateValue.currentPosition.x + 1, robotStateValue.currentPosition.y - 1)
                 }.run {
                     with(bitMatrix) {
                         setBool(robotStateValue.currentPosition.x, robotStateValue.currentPosition.y, true)
@@ -33,11 +32,10 @@ data class RobotShape(val bitMatrix: BitMatrix,
         }
     }
 
-    fun paintActionPositions(booster: Boosters): Unit {
+    fun paintActionPositions(booster: Boosters) {
        when(booster) {
             Boosters.ExtraArm -> {
-                gameState.robotState.forEach {
-                        robotKey, robotStateValue ->
+                gameState.robotState.forEach { _, robotStateValue ->
                     MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
                         .takeIf { true }
                         ?:apply {
@@ -55,8 +53,7 @@ data class RobotShape(val bitMatrix: BitMatrix,
                 }
             }
             Boosters.Drill -> {
-                gameState.robotState.forEach {
-                        robotKey, robotStateValue ->
+                gameState.robotState.forEach { _, robotStateValue ->
                     MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
                         .takeIf { true }
                         .run {
@@ -67,7 +64,7 @@ data class RobotShape(val bitMatrix: BitMatrix,
                         }
                 }
             }
-            Boosters.Drill -> TODO("Implement Drill")
+            Boosters.Drill -> {}
             else -> throw IllegalStateException("Invalid Booster ${booster}")
         }
     }
