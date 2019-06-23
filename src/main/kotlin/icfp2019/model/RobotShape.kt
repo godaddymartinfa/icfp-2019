@@ -2,6 +2,7 @@ package icfp2019.model
 
 import icfp2019.analyzers.MoveAnalyzer
 import umontreal.ssj.util.BitMatrix
+import java.lang.IllegalStateException
 
 data class RobotShape(val bitMatrix: BitMatrix,
                       val gameBoard: GameBoard,
@@ -32,8 +33,8 @@ data class RobotShape(val bitMatrix: BitMatrix,
         }
     }
 
-    fun paintActionPositions(currentPosition: Point, boosters: Boosters): () -> Unit {
-        when(boosters) {
+    fun paintActionPositions(booster: Boosters): Unit {
+       when(booster) {
             Boosters.ExtraArm -> {
                 gameState.robotState.forEach {
                         robotKey, robotStateValue ->
@@ -66,23 +67,8 @@ data class RobotShape(val bitMatrix: BitMatrix,
                         }
                 }
             }
-            Boosters.Boost -> {
-                gameState.robotState.forEach {
-                        robotKey, robotStateValue ->
-                    MoveAnalyzer.analyze(gameBoard)(gameState)(robotStateValue.robotId, Action.DoNothing)
-                        .takeIf { true }
-                        .apply {
-                            gameState.robotState.
-                            robotStateValue.orientation = robotStateValue.checkOpenOrientations().any()
-                        }.run {
-                            with(bitMatrix) {
-                                // Paint just drill location
-                                setBool(robotStateValue.currentPosition.x, robotStateValue.currentPosition.y, true)
-                            }
-                        }
-                }
-
-            }
+            Boosters.Drill -> TODO("Implement Drill")
+            else -> throw IllegalStateException("Invalid Booster ${booster}")
         }
     }
 
