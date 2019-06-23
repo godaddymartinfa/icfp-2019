@@ -1,9 +1,8 @@
 package icfp2019.strategies
 
 import icfp2019.analyzers.GraphAnalyzer
-import icfp2019.core.MoveSelector
-import icfp2019.core.Proposal
-import icfp2019.core.Strategy
+import icfp2019.analyzers.MoveListAnalyzer
+import icfp2019.core.*
 import icfp2019.model.Action
 import icfp2019.model.GameBoard
 import icfp2019.model.GameState
@@ -20,7 +19,6 @@ object DFSStrategy : Strategy {
             val undirectedGraph: Graph<Node, DefaultEdge> = GraphAnalyzer.analyze(map).invoke(gameState)
             val it: GraphIterator<Node, DefaultEdge> = DepthFirstIterator<Node, DefaultEdge>(undirectedGraph)
             val visitedMap = mutableMapOf<Node, Boolean>()
-            visitedMap.putIfAbsent(gameState.robotState.currentNode, true)
 
             val traversalList: MutableList<Action> = mutableListOf()
             while (it.hasNext()) {
@@ -28,14 +26,12 @@ object DFSStrategy : Strategy {
                 if (!visitedMap.containsKey(currentNode)) {
                     // Consume the node if we haven't seen the node before
                     val moves: List<Action> = when (!currentNode.isWrapped) {
-                        true -> MoveSelector.availableMoves(gameState.robotState, gameState)
+                        true -> MoveListAnalyzer.analyze(map)
                         false -> listOf()
-                    }
-
-                    traversalList.add(pickMove(moves))
+                    }.invoke(gameState).invoke(gameState.robotState.robotId)
                 }
             }
-            traversalList
+            Proposal(DistanceEstimate(0), Action.MoveUp)
         }
     }
 
