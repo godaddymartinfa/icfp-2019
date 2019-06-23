@@ -34,6 +34,14 @@ class RobotShapeTests {
         val problem = parseTestMap(map)
         val matrix = BitMatrix(problem.size.x, problem.size.y)
         val robotShape = RobotShape(matrix, GameBoard.gameBoardOf(problem), GameState.gameStateOf(Point(1, 1)))
+        Assertions.assertTrue(robotShape.bitMatrix.getBool(1, 1))
+    }
+
+    @Test
+    fun testRobotPaintActionPositions() {
+        val problem = parseTestMap(map)
+        val matrix = BitMatrix(problem.size.x, problem.size.y)
+        val robotShape = RobotShape(matrix, GameBoard.gameBoardOf(problem), GameState.gameStateOf(Point(1, 1)))
         robotShape.paintActionPositions(Boosters.ExtraArm)
         Assertions.assertTrue(robotShape.bitMatrix.getBool(1, 1))
     }
